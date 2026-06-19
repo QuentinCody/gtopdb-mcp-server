@@ -23,6 +23,8 @@ export function registerCodeMode(
 
     const executeTool = createExecuteTool({
         prefix: "gtopdb",
+        // Verifiable provenance: gtopdb_execute results carry a _meta.citation.
+        source: { id: "gtopdb", name: "IUPHAR/BPS Guide to PHARMACOLOGY", url: "https://www.guidetopharmacology.org", license: "CC BY-SA 4.0" },
         catalog: gtopdbCatalog,
         apiFetch,
         doNamespace: env.GTOPDB_DATA_DO,
