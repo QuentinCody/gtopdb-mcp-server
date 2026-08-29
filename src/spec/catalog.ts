@@ -5,7 +5,7 @@ export const gtopdbCatalog: ApiCatalog = {
     baseUrl: "https://www.guidetopharmacology.org/services",
     version: "2.0",
     auth: "none",
-    endpointCount: 17,
+    endpointCount: 22,
     notes:
         "Complements ChEMBL — ChEMBL is compound-centric with broad assay data; " +
         "GtoPdb/IUPHAR is receptor/ligand-centric with curated functional classifications " +
