@@ -9,6 +9,7 @@ import { GtopdbDataDO } from "./do";
 export { GtopdbDataDO };
 
 interface GtopdbEnv {
+    GTOPDB_API_KEY?: string;
     GTOPDB_DATA_DO: DurableObjectNamespace;
     CODE_MODE_LOADER: WorkerLoader;
 }

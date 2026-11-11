@@ -1,10 +1,11 @@
 import type { ApiCatalog } from "@bio-mcp/shared/codemode/catalog";
+import { evidenceEndpoints, evidenceRecipe } from "./evidence";
 
 export const gtopdbCatalog: ApiCatalog = {
     name: "Guide to PHARMACOLOGY (GtoPdb / IUPHAR)",
     baseUrl: "https://www.guidetopharmacology.org/services",
     version: "2.0",
-    auth: "none",
+    auth: "Requires server-side GTOPDB_API_KEY (GTP-API-Key header)",
     endpointCount: 22,
     notes:
         "Complements ChEMBL — ChEMBL is compound-centric with broad assay data; " +
@@ -13,6 +14,7 @@ export const gtopdbCatalog: ApiCatalog = {
         "questions (agonist/antagonist selectivity, family relationships, natural vs synthetic ligands).\n" +
         "\n" +
         "API notes:\n" +
+        "- API access requires a provider-issued key configured as GTOPDB_API_KEY on the Worker; never include credentials in Code Mode scripts. Approximate limit: 60 requests/minute.\n" +
         "- All responses are JSON. Base URL: https://www.guidetopharmacology.org/services.\n" +
         "- Target types: 'GPCR', 'NHR', 'LGIC', 'VGIC', 'OtherIC', 'Enzyme', 'CatalyticReceptor',\n" +
         "  'Transporter', 'OtherProtein', 'AccessoryProtein'.\n" +
@@ -27,7 +29,7 @@ export const gtopdbCatalog: ApiCatalog = {
         "  live under /ligands/families. There is no root /families endpoint.\n" +
         "- External database cross-references are exposed per-entity via\n" +
         "  /targets/{id}/databaseLinks and /ligands/{id}/databaseLinks (no root /databases endpoint).\n" +
-        "- The full /refs list is large (>30k refs) and slow; prefer filtered or paged use.\n" +
+        "- Native paths retain their array/object shapes. Three local /evidence/targets/{targetId} routes add source receipts without changing upstream requests; see the evidence recipe. No complete dataset or release is implied.\n" +
         "- Species filter uses common names ('Human', 'Mouse', 'Rat', etc.).",
     endpoints: [
         // ─── Targets ────────────────────────────────────────────────
@@ -324,4 +326,8 @@ export const gtopdbCatalog: ApiCatalog = {
             ],
         },
     ],
+    workflows: [evidenceRecipe],
 };
+
+gtopdbCatalog.endpoints.push(...evidenceEndpoints(gtopdbCatalog.endpoints));
+gtopdbCatalog.endpointCount = gtopdbCatalog.endpoints.length;
